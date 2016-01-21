@@ -239,7 +239,7 @@ export default Ember.Service.extend({
     var columns = [plural + ".*"];
 
     snapshot.eachRelationship(function(name, relationship) {
-      if (relationship.kind == "hasMany") {
+      if (relationship.kind === "hasMany") {
         var table = _this.pluralizeModelName(relationship.type);
 
         query.join({
@@ -413,7 +413,7 @@ export default Ember.Service.extend({
     var sql = "INSERT INTO " + plural + " (";
     sql += Object.keys(data).join(", ");
     sql += ") VALUES (";
-    sql += Object.keys(data).map(function(a) { return "?" });
+    sql += Object.keys(data).map(function(a) { return "?"; });
     sql += ")";
     var values = Object.keys(data).map(k => data[k]);
 
@@ -454,7 +454,7 @@ export default Ember.Service.extend({
         Ember.debug(sql, values);
         transaction.executeSql(sql, values, function(tx, res) {
           Ember.run(null, resolve);
-        },function() {
+        },function(error) {
           Ember.run(null, reject, error);
         });
       });
